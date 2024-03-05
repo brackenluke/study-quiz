@@ -131,3 +131,43 @@ function getQuestion() {
 
 // Function that checks for correct answer. If answer is wrong, will deduct time. Sends user to next question.
 
+function questionResult() {
+	if (
+		this.value !==
+		studyQuestions[currentQuestionIndex]
+			.answer
+	) {
+		time -= 10;
+		if (time < 0) {
+			time = 0;
+		}
+		timerEl.textContent = time;
+		feedbackEl.textContent = `Wrong Answer! Actually, the answer was 
+		${studyQuestions[currentQuestionIndex].answer}.`;
+		feedbackEl.style.color = "red";
+	} else {
+		feedbackEl.textContent =
+			"Correct!";
+		feedbackEl.style.color =
+			"green";
+	}
+	feedbackEl.setAttribute(
+		"class",
+		"feedback"
+	);
+	setTimeout(function () {
+		feedbackEl.setAttribute(
+			"class",
+			"feedback hide"
+		);
+	}, 1000);
+	currentQuestionIndex++;
+	if (
+		currentQuestionIndex ===
+		questions.length
+	) {
+		quizEnd();
+	} else {
+		getQuestion();
+	}
+}
