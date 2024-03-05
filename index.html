@@ -49,7 +49,31 @@
                     </button>
                 </div>
             </div>
+            <!--Hidden Quiz Questions-->
+            <div class="hidden" id="study-questions">
+                <h2 id="question-text"></h2>
+                <div class="study-options" id="study-options"></div>
+            </div>
+            <!--Hidden Results page with user-name Submit-->
+            <div class="hidden" id="study-end">
+                <h2>Congratulations! Study Quiz Completed!</h2>
+                <p>
+                    Study Score:
+                    <span id="study-score"></span>
+                </p>
+                <p>
+                    Your Name:
+                    <input type="text" id="user-name"/>
+                    <button id="study-submit">
+                        Submit Score to Leaderboard
+                    </button>
+                </p>
+            </div>
+            
+            <!--Hidden User Results. Example: Wrong/Correct-->
+            <div id="notify" class="notify-hide"></div>
         </main>
     </div>
+    <script src="/assets/script.js"></script>
 </body>
 </html>
