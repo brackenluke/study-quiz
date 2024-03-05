@@ -65,3 +65,69 @@ let studyQuestions = [
     },
 ];
 
+// Get the require Dom Elements
+
+let studyQuestionsEl = document.querySelector("#studyQuestions");
+let headerTimerEl = document.querySelector("#headerTimer");
+let choicesEl = document.querySelector("#options");
+let submitBtn = document.querySelector("#submit-score");
+let startBtn = document.querySelector("#start");
+let nameEl = document.querySelector("name");
+let feedbackEl = document.querySelector("feedback");
+
+// Study Quiz Starting Options
+
+let currentQuestionIndex = 0;
+let time = studyQuestions.length * 15;
+let timerID;
+
+// Function to start Study Quiz and to Hide landing page
+
+function quizStart() {
+    timerId = setInterval(
+        clockTick,
+        1000
+    );
+    headerTimerEl.textContent = time;
+    let landingPageEl = document.getElementById(
+        "study-screen"
+    );
+    landingPageEl.setAttribute(
+        "class",
+        "hide"
+    );
+    studyQuestionsEl.removeAttribute(
+        "class"
+    );
+    getQuestion();
+}
+
+// Function to loop to get random questions and pair with the answers, also creates a list with buttons the user can see
+
+function getQuestion() {
+    let currentQuestion = studyQuestions[currentQuestionIndex];
+    let promptEl = document.getElementById(
+        "question-text"
+    );
+    promptEl.textContent = currentQuestion.prompt;
+    choicesEl.innerHTML = "";
+    currentQuestion.options.forEach(
+        function (choice, i) {
+            let choiceBtn = document.createElement(
+                "button"
+            );
+            choiceBtn.setAttribute(
+                "value",
+                choice
+            );
+            choiceBtn.textContent = i + 1 + ". " + choice;
+            choiceBtn.onclick = questionResult;
+            choicesEl.appendChild(
+                choiceBtn
+            );
+        }
+    );
+}
+
+// Function that checks for correct answer. If answer is wrong, will deduct time. Sends user to next question.
+
