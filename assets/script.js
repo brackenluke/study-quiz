@@ -94,7 +94,7 @@ function quizStart() {
     );
     landingPageEl.setAttribute(
         "class",
-        "hide"
+        "hidden"
     );
     studyQuestionsEl.removeAttribute(
         "class"
@@ -153,12 +153,12 @@ function questionResult() {
 	}
 	feedbackEl.setAttribute(
 		"class",
-		"feedback"
+		"notify"
 	);
 	setTimeout(function () {
 		feedbackEl.setAttribute(
 			"class",
-			"feedback hide"
+			"notify hidden"
 		);
 	}, 1000);
 	currentQuestionIndex++;
@@ -170,4 +170,36 @@ function questionResult() {
 	} else {
 		getQuestion();
 	}
+}
+
+// Function that ends the Study Quiz if the Timer has no time left
+
+function timerZero() {
+    time--;
+    timerEl.textContent = time;
+    if (time <= 0) {
+        quizEnd();
+    }
+}
+
+// Function that ends the Study Quiz and brings up score
+
+function quizEnd() {
+    clearInterval(timerID);
+    let endingScreenEl = 
+        document.getElementById(
+            "study-end"
+        );
+    endingScreenEl.removeAttribute(
+        "class"
+    );
+    let studyScoreEl =
+        document.getElementById(
+            "score-final"
+        );
+    studyScoreEl.textContent = time;
+    studyQuestionsEl.setAttribute(
+        "class",
+        "hidden"
+    );
 }
