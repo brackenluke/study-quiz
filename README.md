@@ -6,4 +6,9 @@ Application using HTML, CSS, and JavaScript. Main use for the application is to 
 To start the quiz, click the "Click Here to Start" button. Use your prior coding to knowledge to answer each question. To answer a question, click on the highlighted choices. Wrong answers will deduct from your time! View the leaderboard to save your score. Click the "Submit Score to Leaderboard" button to save your score. Click the "Restart Quiz" button to restart the quiz, and your score should be saved even after restarting. Good luck!
 ## Application URL:
 
-## Screenshot:
+## Screenshots:
+Landing Page Screenshot: ![Webpage Screenshot showing Landing Page](./assets/images/README-screenshot.png "Landing Page Screenshot")
+
+Study Quiz Screenshot: ![Webpage Screenshot showing the Study Quiz after a Wrong Answer](./assets/images/README-screenshot2.png "Study Quiz Screenshot")
+
+Leaderboard Screenshot: ![Webpage Screenshot showing the Leaderboard with a few hiscores saved](./assets/images/README-screenshot3.png "Leaderboard Screenshot")
