@@ -65,75 +65,58 @@ let studyQuestions = [
     },
 ];
 
-// Get the require Dom Elements
+// Get Dom Elements
 
 let studyQuestionsEl = document.querySelector("#studyQuestions");
 let headerTimerEl = document.querySelector("#headerTimer");
-let choicesEl = document.querySelector("#options");
-let submitBtn = document.querySelector("#submit-score");
-let startBtn = document.querySelector("#start");
-let nameEl = document.querySelector("name");
-let feedbackEl = document.querySelector("feedback");
+let optionsEl = document.querySelector("#options");
+let saveBtn = document.querySelector("#study-submit");
+let startBtn = document.querySelector("#start-quiz");
+let userNameEl = document.querySelector("#user-name");
+let notifyEl = document.querySelector("#notify");
 
-// Study Quiz Starting Options
-
+// Sets Study Quiz initial state
 let currentQuestionIndex = 0;
 let time = studyQuestions.length * 15;
-let timerID;
+let timerInterval;
 
-// Function to start Study Quiz and to Hide landing page
-
+// Starts the Study Quiz and Hides Frontpage
 function quizStart() {
-    timerId = setInterval(
-        clockTick,
-        1000
-    );
-    headerTimerEl.textContent = time;
-    let landingPageEl = document.getElementById(
-        "study-screen"
-    );
-    landingPageEl.setAttribute(
-        "class",
-        "hidden"
-    );
-    studyQuestionsEl.removeAttribute(
-        "class"
-    );
-    getQuestion();
+	headerTimerEl.textContent = time;
+	timerInterval = setInterval(
+		timerZero,
+		1000
+	);
+	
+	let studyScreenEl = document.getElementById("study-screen");
+	studyScreenEl.setAttribute("class","hidden");
+    studyQuestionsEl.removeAttribute("class");
+	getQuestion();
 }
 
-// Function to loop to get random questions and pair with the answers, also creates a list with buttons the user can see
-
+// Function that loops through the questions and the answers, then 
+//creates a list
 function getQuestion() {
-    let currentQuestion = studyQuestions[currentQuestionIndex];
-    let promptEl = document.getElementById(
-        "question-text"
-    );
-    promptEl.textContent = currentQuestion.prompt;
-    choicesEl.innerHTML = "";
-    currentQuestion.options.forEach(
-        function (choice, i) {
-            let choiceBtn = document.createElement(
-                "button"
-            );
-            choiceBtn.setAttribute(
-                "value",
-                choice
-            );
-            choiceBtn.textContent = i + 1 + ". " + choice;
-            choiceBtn.onclick = questionResult;
-            choicesEl.appendChild(
-                choiceBtn
-            );
-        }
-    );
+	let currentQuestion = studyQuestions[currentQuestionIndex];
+	let promptEl = document.getElementById("question-text");
+	promptEl.textContent = currentQuestion.prompt;
+	optionsEl.innerHTML = "";
+	currentQuestion.options.forEach(
+		function (choice, i) {
+			let choiceBtn = document.createElement("button");
+			choiceBtn.setAttribute("value",choice);
+			choiceBtn.textContent = i + 1 + ". " + choice;
+			choiceBtn.onclick = questionNotify;
+			optionsEl.appendChild(choiceBtn);
+		}
+	);
 }
 
-// Function that checks for correct answer. If answer is wrong, will deduct time. Sends user to next question.
-
-function questionResult() {
+//Function that with check the for correct answer, will deduct time for 
+//wrong answers, and skips to the next question
+function questionNotify() {
 	if (
-		this.value !==
+		this.value !=
 		studyQuestions[currentQuestionIndex]
 			.answer
 	) {
@@ -141,22 +124,22 @@ function questionResult() {
 		if (time < 0) {
 			time = 0;
 		}
-		timerEl.textContent = time;
-		feedbackEl.textContent = `Wrong Answer! Actually, the answer was 
+		headerTimerEl.textContent = time;
+		notifyEl.textContent = `Wrong! The correct answer was 
 		${studyQuestions[currentQuestionIndex].answer}.`;
-		feedbackEl.style.color = "red";
+		notifyEl.style.color = "red";
 	} else {
-		feedbackEl.textContent =
+		notifyEl.textContent =
 			"Correct!";
-		feedbackEl.style.color =
+		notifyEl.style.color =
 			"green";
 	}
-	feedbackEl.setAttribute(
+	notifyEl.setAttribute(
 		"class",
 		"notify"
 	);
 	setTimeout(function () {
-		feedbackEl.setAttribute(
+		notifyEl.setAttribute(
 			"class",
 			"notify hidden"
 		);
@@ -164,7 +147,7 @@ function questionResult() {
 	currentQuestionIndex++;
 	if (
 		currentQuestionIndex ===
-		questions.length
+		studyQuestions.length
 	) {
 		quizEnd();
 	} else {
@@ -172,34 +155,49 @@ function questionResult() {
 	}
 }
 
-// Function that ends the Study Quiz if the Timer has no time left
-
-function timerZero() {
-    time--;
-    timerEl.textContent = time;
-    if (time <= 0) {
-        quizEnd();
-    }
-}
-
-// Function that ends the Study Quiz and brings up score
-
+// Function that will end the quiz, stop the timer, and bring up the score
 function quizEnd() {
-    clearInterval(timerID);
-    let endingScreenEl = 
-        document.getElementById(
-            "study-end"
-        );
-    endingScreenEl.removeAttribute(
-        "class"
-    );
-    let studyScoreEl =
-        document.getElementById(
-            "score-final"
-        );
-    studyScoreEl.textContent = time;
-    studyQuestionsEl.setAttribute(
-        "class",
-        "hidden"
-    );
+	clearInterval(timerInterval);
+	let endScreenEl = document.getElementById("study-end");
+	endScreenEl.removeAttribute("class");
+	let finalScoreEl = document.getElementById("study-score");
+	finalScoreEl.textContent = time;
+	studyQuestionsEl.setAttribute("class","hidden");
 }
+
+//Function that will end the quiz once timer runs out
+function timerZero() {
+	time--;
+	headerTimerEl.textContent = time;
+	if (time <= 0) {
+		quizEnd();
+	}
+}
+
+// Saves the final score
+function saveHighscore() {
+	let name = userNameEl.value.trim();
+	if (name !== "") {
+		let highscores = JSON.parse(window.localStorage.getItem("highscores")) || [];
+		let newScore = {
+			score: time,
+			name: name,
+		};
+		highscores.push(newScore);
+		window.localStorage.setItem("highscores",JSON.stringify(highscores));
+		alert("Your Score has been Submitted to the Highscores successfully!");
+	}
+}
+
+function checkForEnter(event) {
+	if (event.key === "Enter") {
+		saveHighscore();
+		alert("Your Score has been Submitted to the Highscores successfully!");
+	}
+}
+
+userNameEl.onkeyup = checkForEnter;
+
+saveBtn.onclick = saveHighscore;
+
+startBtn.onclick = quizStart;

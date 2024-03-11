@@ -9,6 +9,7 @@ input[type="text"] {
     font-weight: bold;
 }
 
+/* Stlyes the Container */
 .containerOne {
     border: 5px solid;
     position: absolute;
@@ -21,6 +22,7 @@ input[type="text"] {
     padding: 10px;
 }
 
+/* Stles the Buttons */
 button {
     display: inline-block;
     margin: 10px;
@@ -37,17 +39,20 @@ button:hover {
     background-color: aquamarine;
 }
 
+/* Style for Timer */
 .headerTimer {
     position: absolute;
     top: 12px;
     right: 12px;
 }
 
+/* Styles for Paragraph */
 p {
     justify-content: center;
     margin: 12px 12px;
 }
 
+/* Controls which page you can see by removing and adding class */
 .hidden {
     display: none;
 }
